@@ -6,6 +6,7 @@ const jobSchema = new mongoose.Schema({
   title: String,
   companyName: String,
   description: String,
+  category: String, // e.g. IT, Marketing
   location: String,
   jobType: String, // e.g. full-time, part-time
   salaryRange: String,

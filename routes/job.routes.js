@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { createJob, deleteJob, getAllJobs, getJobById, updateJob } from "../controller/job.controller.js";
 
 const jobRouter = Router();
 
@@ -8,27 +9,15 @@ const jobRouter = Router();
 // PUT     /api/jobs/:id           → Edit a job
 // DELETE  /api/jobs/:id           → Delete a job
 
-jobRouter.get("/jobs", (req, res) => {
-    res.send({ title: "get all jobs" });
-});
+jobRouter.get("/jobs", getAllJobs);
 
-jobRouter.get("/jobs/:id", (req, res) => {
-    const jobId = req.params.id;
-    res.send({ title: "get job", id: jobId });
-});
+jobRouter.get("/jobs/:id", getJobById);
 
-jobRouter.post("/jobs", (req, res) => {
-    res.send({ title: "post job" });
-});
-jobRouter.put("/jobs/:id", (req, res) => {
-    const jobId = req.params.id;
-    res.send({ title: "edit job", id: jobId });
-}); 
+jobRouter.post("/jobs", createJob);
 
-jobRouter.delete("/jobs/:id", (req, res) => {
-    const jobId = req.params.id;
-    res.send({ title: "delete job", id: jobId });
-}); 
+jobRouter.put("/jobs/:id",updateJob); 
+
+jobRouter.delete("/jobs/:id", deleteJob); 
 
 
 export default jobRouter;
