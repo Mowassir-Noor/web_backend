@@ -1,4 +1,8 @@
 import { Router } from "express";
+import { addEducation, deleteEducation, getEducation, updateEducation } from "../controller/education.controller.js";
+import { addSkill, deleteSkill, getSkills,updateSkill } from "../controller/skill.controller.js";
+// import { get } from "mongoose";
+import { addExperience,  deleteExperience,  getExperienceById,  getExperienceByUserId,  getExperiences, updateExperience } from "../controller/experience.controller.js";
 
 const userRouter = Router();
 
@@ -28,37 +32,32 @@ userRouter.delete("/users/:id", (req, res) => {
 // POST    /api/users/:id/education     → Add education
 // POST    /api/users/:id/skill         → Add skill
 
+// Experience related routes
+userRouter.get("/users/experience/info", getExperiences);
+userRouter.get("/users/experience/:id", getExperienceById)
+userRouter.post("/users/experience",addExperience) ;
 
-userRouter.post("/users/:id/experience", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "add experience", id: userId });
-});
+userRouter.patch("/users/experience/:id", updateExperience);
 
-userRouter.put("/users/:id/experience/:expId", (req, res) => {
-    const userId = req.params.id;
-    const expId = req.params.expId;
-    res.send({ title: "update experience", id: userId, expId });
-});
-
-userRouter.delete("/users/:id/experience/:expId", (req, res) => {
-    const userId = req.params.id;
-    const expId = req.params.expId;
-    res.send({ title: "delete experience", id: userId, expId });
-});
-
-userRouter.post("/users/:id/education", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "add education", id: userId });
-});
-userRouter.post("/users/:id/skill", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "add skill", id: userId });
-});
-userRouter.get("/users/:id/experience", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "get experience", id: userId });
-});
+userRouter.delete("/users/experience/:id",deleteExperience);
+// this endpoint will return all experience of a user
+userRouter.get("/users/experience/all/:id", getExperienceByUserId);
 
 
+// Education related routes
+// /users/education → Get all education route was not working 
+// /users/education/info → Get all education info works well
+userRouter.get("/users/education/info",getEducation);
+userRouter.post("/users/education", addEducation);
+userRouter.put("/users/education/:id", updateEducation);
+userRouter.delete("/users/education/:id", deleteEducation);
+
+
+
+// skill related routes
+userRouter.get("/users/skill/info", getSkills); 
+userRouter.post("/users/skill",addSkill);
+userRouter.patch("/users/skill/:id",updateSkill);
+userRouter.delete("/users/skill/:id", deleteSkill)
 
 export default userRouter;
