@@ -3,6 +3,8 @@ import { addEducation, deleteEducation, getEducation, updateEducation } from "..
 import { addSkill, deleteSkill, getSkills,updateSkill } from "../controller/skill.controller.js";
 // import { get } from "mongoose";
 import { addExperience,  deleteExperience,  getExperienceById,  getExperienceByUserId,  getExperiences, updateExperience } from "../controller/experience.controller.js";
+import {upload} from "../config/cloudinary.js";
+import { uploadResume } from "../controller/resume.controller.js";
 
 const userRouter = Router();
 
@@ -24,6 +26,10 @@ userRouter.delete("/users/:id", (req, res) => {
     const userId = req.params.id;
     res.send({ title: "delete user", id: userId });
 });
+
+
+// for user
+userRouter.post("/users/resume",upload.single("resume"),uploadResume )
 
 // POST    /api/users/:id/experience    → Add experience
 // PUT     /api/users/:id/experience/:expId → Update experience
