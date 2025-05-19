@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createJob, deleteJob, getAllJobs, getJobById, updateJob } from "../controller/job.controller.js";
+import { searchJobs } from "../controller/search.controller.js";
 
 const jobRouter = Router();
 
@@ -9,6 +10,7 @@ const jobRouter = Router();
 // PUT     /api/jobs/:id           → Edit a job
 // DELETE  /api/jobs/:id           → Delete a job
 
+jobRouter.get("/jobs/search",searchJobs) 
 jobRouter.get("/jobs", getAllJobs);
 
 jobRouter.get("/jobs/:id", getJobById);
@@ -17,7 +19,7 @@ jobRouter.post("/jobs", createJob);
 
 jobRouter.put("/jobs/:id",updateJob); 
 
-jobRouter.delete("/jobs/:id", deleteJob); 
+jobRouter.delete("/jobs/:id", deleteJob);
 
 
 export default jobRouter;

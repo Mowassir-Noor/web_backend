@@ -8,6 +8,7 @@ import applicationRouter from './routes/application.routes.js';
 import userRouter from './routes/user.routes.js';
 import errorMiddleware from './middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 
 
@@ -18,6 +19,15 @@ app.use(errorMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// CORS middleware
+app.use(cors({
+  origin: 'http://127.0.0.1:3000', // or 'http://localhost:3000'
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+app.options('*', cors());
 
 
 // Integrating routes
