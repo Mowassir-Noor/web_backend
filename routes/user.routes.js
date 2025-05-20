@@ -9,24 +9,24 @@ import { getUserProfile, updateUserInfo } from "../controller/user.controller.js
 
 const userRouter = Router();
 
-// for admin
-userRouter.get("/users", (req, res) => {
-    res.send({ title: "users" });
-});
+// // for admin
+// userRouter.get("/users", (req, res) => {
+//     res.send({ title: "users" });
+// });
 
-userRouter.get("/users/:id", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "user", id: userId });
-});
+// userRouter.get("/users/:id", (req, res) => {
+//     const userId = req.params.id;
+//     res.send({ title: "user", id: userId });
+// });
 
-userRouter.put("/users/:id", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "update user", id: userId });
-});
-userRouter.delete("/users/:id", (req, res) => {
-    const userId = req.params.id;
-    res.send({ title: "delete user", id: userId });
-});
+// userRouter.put("/users/:id", (req, res) => {
+//     const userId = req.params.id;
+//     res.send({ title: "update user", id: userId });
+// });
+// userRouter.delete("/users/:id", (req, res) => {
+//     const userId = req.params.id;
+//     res.send({ title: "delete user", id: userId });
+// });
 
 
 // for user
