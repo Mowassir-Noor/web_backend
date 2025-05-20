@@ -23,7 +23,7 @@ app.use(cookieParser());
 // CORS middleware
 app.use(cors({
   origin: 'http://127.0.0.1:3000', // or 'http://localhost:3000'
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
   credentials: true
 }));
 
