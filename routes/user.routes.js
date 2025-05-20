@@ -5,7 +5,7 @@ import { addSkill, deleteSkill, getSkills,updateSkill } from "../controller/skil
 import { addExperience,  deleteExperience,  getExperienceById,  getExperienceByUserId,  getExperiences, updateExperience } from "../controller/experience.controller.js";
 import {upload} from "../config/cloudinary.js";
 import { uploadResume } from "../controller/resume.controller.js";
-import { getUserProfile } from "../controller/user.controller.js";
+import { getUserProfile, updateUserInfo } from "../controller/user.controller.js";
 
 const userRouter = Router();
 
@@ -42,6 +42,7 @@ userRouter.post("/users/resume",upload.single("resume"),uploadResume )
 // get user profile
 userRouter.get("/users/profile/info", getUserProfile);
 
+userRouter.put("/users/profile",updateUserInfo);
 
 
 // Experience related routes

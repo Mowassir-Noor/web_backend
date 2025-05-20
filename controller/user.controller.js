@@ -48,6 +48,38 @@ export const getUserProfile = async (req, res) => {
 
 
 
+export const updateUserInfo = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Unauthorized: Missing token" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
+
+    const { name, location, bio } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, location, bio },
+      { new: true, runValidators: true, select: "-password" }
+    );
+
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Update profile error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 
 
 
