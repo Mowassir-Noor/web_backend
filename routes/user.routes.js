@@ -69,7 +69,7 @@ userRouter.delete("/users/education/:id", deleteEducation);
 // skill related routes
 userRouter.get("/users/skill/info", getSkills); 
 userRouter.post("/users/skill",addSkill);
-userRouter.patch("/users/skill/:id",updateSkill);
+userRouter.put("/users/skill/:id",updateSkill);
 userRouter.delete("/users/skill/:id", deleteSkill)
 
 export default userRouter;
