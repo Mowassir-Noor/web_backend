@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createJob, deleteJob, getAllJobs, getJobById, updateJob } from "../controller/job.controller.js";
+import { createJob, deleteJob, getAllJobs, getJobById, getJobByRecruiterId, updateJob } from "../controller/job.controller.js";
 import { searchJobs } from "../controller/search.controller.js";
 
 const jobRouter = Router();
@@ -12,6 +12,7 @@ const jobRouter = Router();
 
 jobRouter.get("/jobs/search",searchJobs) 
 jobRouter.get("/jobs", getAllJobs);
+jobRouter.get("/jobs/recruiter/:id",getJobByRecruiterId);
 
 jobRouter.get("/jobs/:id", getJobById);
 

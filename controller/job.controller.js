@@ -280,3 +280,29 @@ export const deleteJob = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getJobByRecruiterId = async (req, res) => {
+  const { recruiterId } = req.params;
+
+  try {
+    const jobs = await Job.find({ role : recruiterId }).populate("recruiter", "name email"); // optional populate
+
+    if (jobs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No jobs found for this recruiter",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+  } catch (error) {
+    console.error("Error fetching jobs by recruiter ID:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching jobs",
+    });
+  }
+};
