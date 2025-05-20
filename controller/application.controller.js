@@ -21,8 +21,10 @@ export const createApplication = async (req, res) => {
     if (userRole !== "job_seeker") {
       return res.status(403).json({ message: "Only applicants can apply" });
     }
+    const resumeUrl=user.resumeUrl;
+    // console.log(resumeUrl);
 
-    const { jobId, resumeUrl, coverLetter } = req.body;
+    const { jobId, coverLetter } = req.body;
     if (!jobId || !resumeUrl) {
       return res.status(400).json({ message: "Job ID and resume URL are required" });
     }
