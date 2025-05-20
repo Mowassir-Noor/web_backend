@@ -1,35 +1,27 @@
-import { Router } from 'express'
+import { Router } from 'express';
+import {
+  createApplication,
+  getApplicationById,
+  getApplicationsByJobId,
+  getApplications,
+  updateApplication,
+  deleteApplication
+} from '../controller/application.controller.js';
 
-const applicationRouter = Router()
+const applicationRouter = Router();
 
 // GET     /api/applications/           → Get all applications (admin/recruiter)
-// GET     /api/applications/user/:id   → Get applications of a specific user
-// GET     /api/applications/job/:id    → Get all applications for a job
+// GET     /api/applications/:id        → Get a single application by ID
+// GET     /api/applications/job/:jobId → Get all applications for a job
 // POST    /api/applications/           → Apply to a job
-// PUT     /api/applications/:id        → Update application status
+// PUT     /api/applications/:id        → Update application
+// DELETE  /api/applications/:id        → Delete application
 
-applicationRouter.get('/applications', (req, res) => {
-  res.send({ title: 'get all applications' })
-})
-
-applicationRouter.get('/applications/user/:id', (req, res) => {
-  const userId = req.params.id
-  res.send({ title: 'get applications of a specific user', id: userId })
-})
-
-applicationRouter.get('/applications/job/:id', (req, res) => {
-  const jobId = req.params.id
-  res.send({ title: 'get all applications for a job', id: jobId })
-})
-
-applicationRouter.post('/applications', (req, res) => {
-  res.send({ title: 'apply to a job' })
-})
-
-applicationRouter.put('/applications/:id', (req, res) => {
-  const applicationId = req.params.id
-  res.send({ title: 'update application status', id: applicationId })
-})
-
+applicationRouter.post("/applications", createApplication);
+applicationRouter.get("/applications", getApplications);
+applicationRouter.get("/applications/:id", getApplicationById);
+applicationRouter.get("/applications/job/:jobId", getApplicationsByJobId);
+applicationRouter.put("/applications/:id", updateApplication);
+applicationRouter.delete("/applications/:id", deleteApplication);
 
 export default applicationRouter;
