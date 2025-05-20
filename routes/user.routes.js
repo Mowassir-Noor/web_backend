@@ -5,6 +5,7 @@ import { addSkill, deleteSkill, getSkills,updateSkill } from "../controller/skil
 import { addExperience,  deleteExperience,  getExperienceById,  getExperienceByUserId,  getExperiences, updateExperience } from "../controller/experience.controller.js";
 import {upload} from "../config/cloudinary.js";
 import { uploadResume } from "../controller/resume.controller.js";
+import { getUserProfile } from "../controller/user.controller.js";
 
 const userRouter = Router();
 
@@ -37,6 +38,11 @@ userRouter.post("/users/resume",upload.single("resume"),uploadResume )
 
 // POST    /api/users/:id/education     → Add education
 // POST    /api/users/:id/skill         → Add skill
+
+// get user profile
+userRouter.get("/users/profile/info", getUserProfile);
+
+
 
 // Experience related routes
 userRouter.get("/users/experience/info", getExperiences);
