@@ -214,3 +214,77 @@ export const getApplicationsByJobId = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+// Get all applications by a job seeker (user)
+export const getApplicationsByUserId = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const requesterId = decoded.userId;
+
+    // Fetch user and role
+    const user = await User.findById(requesterId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    const userRole = user.role;
+
+    const { userId } = req.params;
+
+    // Only allow the user themselves or a recruiter/admin to view
+    if (userRole !== "recruiter" && userRole !== "admin" && requesterId !== userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    const applications = await Application.find({ applicant: userId }).populate("job applicant");
+    res.json(applications);
+  } catch (error) {
+    console.error("Error fetching applications by user ID:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Recruiter updates application status
+export const recruiterUpdateApplicationStatus = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const recruiterId = decoded.userId;
+
+    // Fetch user and role
+    const user = await User.findById(recruiterId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    const userRole = user.role;
+
+    if (userRole !== "recruiter" && userRole !== "admin") {
+      return res.status(403).json({ message: "Only recruiters can update application status" });
+    }
+
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Validate status
+    const validStatuses = ["applied", "reviewed", "rejected", "accepted"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const application = await Application.findById(id);
+    if (!application) return res.status(404).json({ message: "Application not found" });
+
+    application.status = status;
+    await application.save();
+
+    res.json(application);
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

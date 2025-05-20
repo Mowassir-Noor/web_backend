@@ -5,7 +5,7 @@ import {
   getApplicationsByJobId,
   getApplications,
   updateApplication,
-  deleteApplication
+  deleteApplication, getApplicationsByUserId, recruiterUpdateApplicationStatus
 } from '../controller/application.controller.js';
 
 const applicationRouter = Router();
@@ -23,5 +23,11 @@ applicationRouter.get("/applications/:id", getApplicationById);
 applicationRouter.get("/applications/job/:jobId", getApplicationsByJobId);
 applicationRouter.put("/applications/:id", updateApplication);
 applicationRouter.delete("/applications/:id", deleteApplication);
+
+
+// Add this line:
+applicationRouter.get("/applications/user/:userId", getApplicationsByUserId);
+
+applicationRouter.patch("/applications/:id/status", recruiterUpdateApplicationStatus);
 
 export default applicationRouter;
