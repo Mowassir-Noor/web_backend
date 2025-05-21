@@ -26,7 +26,7 @@ applicationRouter.delete("/applications/:id", deleteApplication);
 
 
 // Add this line:
-applicationRouter.get("/applications/user/:userId", getApplicationsByUserId);
+applicationRouter.get("/applications/user/:id", getApplicationsByUserId);
 
 applicationRouter.patch("/applications/:id/status", recruiterUpdateApplicationStatus);
 

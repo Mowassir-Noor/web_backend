@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import Application from "../models/application.model.js";
 import User from "../models/user.model.js";
 import {JWT_SECRET } from "../config/env.js"
+import mongoose from "mongoose";
 
 export const createApplication = async (req, res) => {
   try {
@@ -219,24 +220,59 @@ export const getApplicationsByJobId = async (req, res) => {
 
 
 // Get all applications by a job seeker (user)
+// export const getApplicationsByUserId = async (req, res) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//       return res.status(401).json({ message: "No token provided" });
+//     }
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, JWT_SECRET);
+//     const requesterId = decoded.userId;
+//     console.log("requesterId :", requesterId);
+//     // Fetch user and role
+//     const user = await User.findById(requesterId);
+//     if (!user) return res.status(404).json({ message: "User not found" });
+//     const userRole = user.role;
+
+//     const  userId  = req.params.id;
+//     // const userId=requesterId;
+//     console.log("user erro :" ,userId);
+
+//     // Only allow the user themselves or a recruiter/admin to view
+//     if (userRole !== "recruiter" && userRole !== "admin" ) {
+//       return res.status(403).json({ message: "Unauthorized" });
+//     }
+
+//     const applications = await Application.find({ applicant: userId }).populate("job applicant");
+//     res.json(applications);
+//   } catch (error) {
+//     console.error("Error fetching applications by user ID:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 export const getApplicationsByUserId = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "No token provided" });
     }
+
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, JWT_SECRET);
     const requesterId = decoded.userId;
 
-    // Fetch user and role
     const user = await User.findById(requesterId);
     if (!user) return res.status(404).json({ message: "User not found" });
+
     const userRole = user.role;
+    const userId = req.params.id; // <- Make sure your route uses :userId
 
-    const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
 
-    // Only allow the user themselves or a recruiter/admin to view
     if (userRole !== "recruiter" && userRole !== "admin" && requesterId !== userId) {
       return res.status(403).json({ message: "Unauthorized" });
     }
@@ -248,6 +284,7 @@ export const getApplicationsByUserId = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Recruiter updates application status
 export const recruiterUpdateApplicationStatus = async (req, res) => {
