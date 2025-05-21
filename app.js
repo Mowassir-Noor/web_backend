@@ -9,7 +9,7 @@ import userRouter from './routes/user.routes.js';
 import errorMiddleware from './middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-
+import { ORIGIN } from './config/env.js';
 
 
 const app = express();
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 // CORS middleware
 app.use(cors({
-  origin: 'https://web-dev-project-3vhy.onrender.com', // or 'http://localhost:3000'
+  origin: ORIGIN, // or 'http://localhost:3000'
   methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
   credentials: true
 }));
