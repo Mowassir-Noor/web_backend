@@ -20,15 +20,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// CORS middleware
+// // CORS middleware
+// app.use(cors({
+//   origin: ORIGIN, // or 'http://localhost:3000'
+//   methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+//   credentials: true
+// }));
+
+const allowedOrigins = [ORIGIN, 'http://localhost:3000','http://127.0.0.1:3000'];
+
 app.use(cors({
-  origin: ORIGIN, // or 'http://localhost:3000'
-  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 }));
 
-app.options('*', cors());
 
+app.use((err, req, res, next) => {
+  if (err.message === 'Not allowed by CORS') {
+    return res.status(403).json({ message: err.message });
+  }
+  next(err);
+});
+
+app.options('*', cors());
 
 // Integrating routes
 // I have to refine the  endpoints in future for better readability and maintainability
